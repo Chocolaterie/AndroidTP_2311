@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -29,13 +30,26 @@ class AppTheme {
 }
 
 @Composable
+fun EniPage(content: @Composable () -> Unit){
+    TpFilRougeTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            Box(modifier = Modifier.padding(innerPadding)) {
+                EniBackgroundPage()
+                // Inserer un composant dynamiquement
+                content()
+            }
+        }
+    }
+}
+
+@Composable
 fun HintText(label : String){
     Text(text = label, style = TextStyle(color = Color.Gray))
 }
 
 @Composable
-fun EniButton(label: String){
-    Button(onClick = {},
+fun EniButton(label: String, onClick: () -> Unit){
+    Button(onClick = onClick,
         border = BorderStroke(3.dp, Color(0x77FFFFFF)),
         modifier = Modifier.fillMaxWidth()
             .padding(vertical = 10.dp),
