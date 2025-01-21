@@ -45,7 +45,7 @@ fun SignUpActivityPage() {
             Image(
                 painter = painterResource(id = R.drawable.sign_up),
                 contentDescription = "Logo SignUp",
-                modifier = Modifier.padding(vertical = 40.dp))
+                modifier = Modifier.padding(vertical = 10.dp))
             EniTextField("Pseudo")
             EniTextField("Email")
             EniTextField("Password")
