@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.tpfilrouge.ui.theme.EniButton
 import com.example.tpfilrouge.ui.theme.EniTextField
 import com.example.tpfilrouge.ui.theme.TpFilRougeTheme
 
@@ -46,9 +47,7 @@ fun ResetPasswordActivityPage() {
                             .padding(vertical = 80.dp)
                     )
                     EniTextField("Email")
-                    ElevatedButton(onClick = {}, modifier = Modifier.fillMaxWidth()) {
-                        Text(text = "Envoyer le lien de récupération")
-                    }
+                    EniButton("Envoyer le lien de récupération")
                 }
             }
         }

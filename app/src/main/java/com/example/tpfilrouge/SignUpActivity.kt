@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.tpfilrouge.ui.theme.EniButton
 import com.example.tpfilrouge.ui.theme.EniTextField
 import com.example.tpfilrouge.ui.theme.TpFilRougeTheme
 
@@ -51,9 +52,7 @@ fun SignUpActivityPage() {
                     EniTextField("City Code")
                     EniTextField("City")
                     EniTextField("Phone Number")
-                    ElevatedButton(onClick = {}, modifier = Modifier.fillMaxWidth()) {
-                        Text(text = "Sign In")
-                    }
+                    EniButton("Sign Up")
                 }
             }
         }

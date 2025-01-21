@@ -2,4 +2,11 @@
     <string name="app_name">TpFilRouge</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
+    <string name="aware_login">Please be aware when you enter credentials in the login page</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="connection">Connection</string>
+    <string name="forget_password">I forget password</string>
+    <string name="dont_account">Don\'t have any account ?</string>
+    <string name="register_now">Register Now</string>
 </resources>
