@@ -60,7 +60,7 @@ fun EniButton(label: String){
 
 @Composable
 fun EniTextField(label : String){
-    TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth(),
+    TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp),
         placeholder = { HintText(label) },
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = Color(0x44000000),

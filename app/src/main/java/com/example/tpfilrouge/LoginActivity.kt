@@ -86,7 +86,10 @@ fun LoginActivityPage() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    locale = "zh"
+)
 @Composable
 fun LoginActivityPreview() {
     LoginActivityPage()

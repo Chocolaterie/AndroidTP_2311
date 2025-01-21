@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TpFilRouge</string>
+    <string name="title_activity_sign_up">Page Inscription</string>
+    <string name="title_activity_reset_password">Page Réinitialisation Mot De Passe</string>
+    <string name="aware_login">Veuillez faire attention lorsque vous entrez vos identifiants sur la page de connexion</string>
+    <string name="email">Email</string>
+    <string name="password">Mot de passe</string>
+    <string name="connection">Connexion</string>
+    <string name="forget_password">J\'ai oublié mon mot de passe</string>
+    <string name="dont_account">Vous n\'avez pas de compte ?</string>
+    <string name="register_now">Inscrivez-vous maintenant</string>
+</resources>

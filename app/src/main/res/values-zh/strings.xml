@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TpFilRouge</string>
+    <string name="title_activity_sign_up">注册活动</string>
+    <string name="title_activity_reset_password">重置密码活动</string>
+    <string name="aware_login">请输入凭据时请注意</string>
+    <string name="email">电子邮件</string>
+    <string name="password">密码</string>
+    <string name="connection">连接</string>
+    <string name="forget_password">我忘记了密码</string>
+    <string name="dont_account">没有账号？</string>
+    <string name="register_now">立即注册</string>
+</resources>
