@@ -44,7 +44,7 @@ fun EniPage(content: @Composable () -> Unit){
 
 @Composable
 fun HintText(label : String){
-    Text(text = label, style = TextStyle(color = Color.Gray))
+    Text(text = label, style = TextStyle(color = Color(0x77FFFFFF)))
 }
 
 @Composable
