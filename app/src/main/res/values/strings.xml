@@ -9,4 +9,6 @@
     <string name="forget_password">I forget password</string>
     <string name="dont_account">Don\'t have any account ?</string>
     <string name="register_now">Register Now</string>
+    <string name="title_activity_list_article">ListArticleActivity</string>
+    <string name="title_list_article_page">Liste des articles</string>
 </resources>
