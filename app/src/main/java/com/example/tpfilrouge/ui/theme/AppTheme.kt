@@ -73,11 +73,15 @@ fun EniButton(label: String, onClick: () -> Unit){
 }
 
 @Composable
-fun EniTextField(label : String){
-    TextField(value = "", onValueChange = {}, modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp),
+fun EniTextField(label : String, value: String = "", onValueChange: (String) -> Unit = {}){
+    TextField(value = value, onValueChange = onValueChange,
+        modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp),
         placeholder = { HintText(label) },
         colors = TextFieldDefaults.colors(
+            unfocusedTextColor = Color(0xDDFFFFFF),
+            focusedTextColor = Color.White,
             unfocusedContainerColor = Color(0x44000000),
+            focusedContainerColor = Color(0x99000000),
             unfocusedIndicatorColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent
         ),
