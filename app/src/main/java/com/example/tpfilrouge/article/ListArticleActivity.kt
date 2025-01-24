@@ -38,6 +38,7 @@ import com.example.tpfilrouge.R
 import com.example.tpfilrouge.ui.theme.EniButton
 import com.example.tpfilrouge.ui.theme.EniPage
 import com.example.tpfilrouge.ui.theme.EniTextField
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class ListArticleActivity : ComponentActivity() {
 
@@ -74,6 +75,28 @@ fun ArticleForm(viewModel: ListArticleViewModel){
 }
 
 @Composable
+fun ArticleCard(article: Article){
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        modifier = Modifier.fillMaxWidth().padding(vertical = 14.dp)
+    ) {
+        Row(modifier = Modifier.padding(10.dp)) {
+            AsyncImage(
+                model = article.imgPath,
+                contentDescription = "",
+                modifier = Modifier.width(82.dp).padding(horizontal = 5.dp),
+                placeholder = painterResource(R.drawable.reset_password_ic),
+            )
+            Column(modifier = Modifier.padding(start = 5.dp)) {
+                Text(article.title,
+                    style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 15.sp))
+                Text(article.desc)
+            }
+        }
+    }
+}
+
+@Composable
 fun ListArticleActivityPage(viewModel: ListArticleViewModel) {
     // Ecouter les changements de la liste d'article dans le ViewModel
     val articlesState by viewModel.articles.collectAsState();
@@ -88,26 +111,13 @@ fun ListArticleActivityPage(viewModel: ListArticleViewModel) {
                 textAlign = TextAlign.Center,
                 style = TextStyle(color = Color.White, fontSize = 28.sp))
             ArticleForm(viewModel)
+            EniButton("Rafraichir") {
+                // Appeler l'api du viewmodel
+                viewModel.callArticlesApi()
+            }
             LazyColumn {
                 items(articlesState) { article ->
-                    ElevatedCard(
-                        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 14.dp)
-                    ) {
-                        Row(modifier = Modifier.padding(10.dp)) {
-                            AsyncImage(
-                                model = article.imgPath,
-                                contentDescription = "",
-                                modifier = Modifier.width(82.dp).padding(horizontal = 5.dp),
-                                placeholder = painterResource(R.drawable.reset_password_ic),
-                                )
-                            Column(modifier = Modifier.padding(start = 5.dp)) {
-                                Text(article.title,
-                                    style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 15.sp))
-                                Text(article.desc)
-                            }
-                        }
-                    }
+                    ArticleCard(article)
                 }
             }
         }
@@ -119,5 +129,11 @@ fun ListArticleActivityPage(viewModel: ListArticleViewModel) {
 )
 @Composable
 fun ListArticleActivityPreview() {
-    ListArticleActivityPage(ListArticleViewModel())
+    var viewModel = ListArticleViewModel();
+    viewModel.articles = MutableStateFlow(listOf(
+        Article("Teletubies", "Meilleur série du monde", "https://avatar.iran.liara.run/public"),
+        Article("Velocipastor", "Meilleur film du monde, gros budget", "https://avatar.iran.liara.run/public"),
+        Article("Photo mouton béret paille ?", "Pourquoi", "https://avatar.iran.liara.run/public")
+    ));
+    ListArticleActivityPage(viewModel)
 }
