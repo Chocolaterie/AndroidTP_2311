@@ -20,8 +20,20 @@ class ListArticleViewModel : ViewModel() {
         AppDialogHelpers.get().showDialog("Chargement des articles en cours")
 
         viewModelScope.launch {
-            // Récupérer les articles via un API Web
-            articles.value = ArticleService.ArticleApi.articleService.getArticles();
+            // Récupérer le metier listArticle via un API Web
+            val serviceResponse = ArticleService.ArticleApi.articleService.getArticles();
+
+            // Plus tard il sera possible de tester le code métier
+            /*
+            if (serviceResponse.code.equals("200")) {
+
+            }
+            */
+
+            // La liste des articles ecoutables se met à jour par rapport à la
+            // la liste des articles dans le data
+            // Node : on remaque !! aprés data car data est nullable (!! que si nullable))
+            articles.value = serviceResponse.data!!;
 
             // Fermer la popup de chargement
             AppDialogHelpers.get().closeDialog();
