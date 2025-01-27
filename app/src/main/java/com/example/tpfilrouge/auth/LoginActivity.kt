@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,22 +24,29 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tpfilrouge.R
+import com.example.tpfilrouge.article.ListArticleActivity
 import com.example.tpfilrouge.ui.theme.EniButton
 import com.example.tpfilrouge.ui.theme.EniPage
 import com.example.tpfilrouge.ui.theme.EniTextField
 
 class LoginActivity : ComponentActivity() {
+
+    var loginViewModel = LoginViewModel();
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            LoginActivityPage()
+            LoginActivityPage(loginViewModel);
         }
     }
 }
 
 @Composable
-fun LoginActivityPage() {
+fun LoginActivityPage(loginViewModel: LoginViewModel) {
+    // Ecouter les changements de l'email et mot de passe saisies
+    val emailField by loginViewModel.email.collectAsState()
+    val passwordField by loginViewModel.password.collectAsState()
 
     val context = LocalContext.current;
 
@@ -57,9 +66,14 @@ fun LoginActivityPage() {
                 textAlign = TextAlign.Center,
                 style = TextStyle(color = Color(0xCCFFFFFF))
             )
-            EniTextField(stringResource(R.string.email))
-            EniTextField(stringResource(R.string.password))
-            EniButton(stringResource(R.string.connection), onClick = {})
+            EniTextField(stringResource(R.string.email), value = emailField, onValueChange = { value -> loginViewModel.email.value = value; })
+            EniTextField(stringResource(R.string.password), value = passwordField, onValueChange = { value -> loginViewModel.password.value = value; })
+            EniButton(stringResource(R.string.connection), onClick = { loginViewModel.callLoginApi(
+                onSuccess = {
+                    // je change de page (page article
+                    context.startActivity(Intent(context, ListArticleActivity::class.java))
+                }
+            ) })
             EniButton(stringResource(R.string.forget_password),
                 onClick = {
                     // Changer de page (d'activity)
@@ -88,5 +102,5 @@ fun LoginActivityPage() {
 )
 @Composable
 fun LoginActivityPreview() {
-    LoginActivityPage()
+    LoginActivityPage(LoginViewModel())
 }
