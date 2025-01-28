@@ -7,6 +7,10 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
+data class EmailDTO(var email: String) {
+
+}
+
 interface AuthService {
 
     @POST("login")
@@ -14,6 +18,9 @@ interface AuthService {
 
     @POST("signup")
     suspend fun signup(@Body signUpRequestDTO: SignUpRequestDTO) : ServiceResponseDTO<SignUpRequestDTO>
+
+    @POST("reset-password")
+    suspend fun resetPassword(@Body email: EmailDTO) : ServiceResponseDTO<String>
 
     object AuthApi {
         val authService : AuthService by lazy { retrofit.create(AuthService::class.java) }
