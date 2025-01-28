@@ -8,6 +8,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -19,17 +21,29 @@ import com.example.tpfilrouge.ui.theme.EniPage
 import com.example.tpfilrouge.ui.theme.EniTextField
 
 class SignUpActivity : ComponentActivity() {
+
+    var signUpViewModel = SignUpViewModel();
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            SignUpActivityPage()
+            SignUpActivityPage(signUpViewModel)
         }
     }
 }
 
 @Composable
-fun SignUpActivityPage() {
+fun SignUpActivityPage(signUpViewModel: SignUpViewModel) {
+    // Ecouter et synchronser les champs saisies
+    val emailField by signUpViewModel.email.collectAsState()
+    val pseudoField by signUpViewModel.pseudo.collectAsState()
+    val passwordField by signUpViewModel.password.collectAsState()
+    val passwordConfirmField by signUpViewModel.passwordConfirm.collectAsState()
+    val cityCodeField by signUpViewModel.cityCode.collectAsState()
+    val cityField by signUpViewModel.city.collectAsState()
+    val phoneField by signUpViewModel.phone.collectAsState()
+
     EniPage {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -38,14 +52,14 @@ fun SignUpActivityPage() {
                 painter = painterResource(id = R.drawable.sign_up),
                 contentDescription = "Logo SignUp",
                 modifier = Modifier.padding(vertical = 10.dp))
-            EniTextField("Pseudo")
-            EniTextField("Email")
-            EniTextField("Password")
-            EniTextField("Password Confirmation")
-            EniTextField("City Code")
-            EniTextField("City")
-            EniTextField("Phone Number")
-            EniButton("Sign Up", onClick = {})
+            EniTextField("Pseudo", value = pseudoField, onValueChange = { value -> signUpViewModel.pseudo.value = value; })
+            EniTextField("Email", value = emailField, onValueChange = { value -> signUpViewModel.email.value = value; })
+            EniTextField("Password", value = passwordField, onValueChange = { value -> signUpViewModel.password.value = value; })
+            EniTextField("Password Confirmation", value = passwordConfirmField, onValueChange = { value -> signUpViewModel.passwordConfirm.value = value; })
+            EniTextField("City Code", value = cityCodeField, onValueChange = { value -> signUpViewModel.cityCode.value = value; })
+            EniTextField("City", value = cityField, onValueChange = { value -> signUpViewModel.city.value = value; })
+            EniTextField("Phone Number", value = phoneField, onValueChange = { value -> signUpViewModel.phone.value = value; })
+            EniButton("Sign Up", onClick = { signUpViewModel.callSignUpApi() })
         }
     }
 }
@@ -53,5 +67,5 @@ fun SignUpActivityPage() {
 @Preview(showBackground = true)
 @Composable
 fun SignUpActivityPreview() {
-    SignUpActivityPage()
+    SignUpActivityPage(SignUpViewModel())
 }

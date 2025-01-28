@@ -12,6 +12,9 @@ interface AuthService {
     @POST("login")
     suspend fun login(@Body loginRequestDTO: LoginRequestDTO) : ServiceResponseDTO<String>
 
+    @POST("signup")
+    suspend fun signup(@Body signUpRequestDTO: SignUpRequestDTO) : ServiceResponseDTO<SignUpRequestDTO>
+
     object AuthApi {
         val authService : AuthService by lazy { retrofit.create(AuthService::class.java) }
     }
