@@ -1,7 +1,9 @@
 package com.example.tpfilrouge.auth
 
+import androidx.compose.material3.AlertDialog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tpfilrouge.helpers.AlertDialogHelpers
 import com.example.tpfilrouge.helpers.AppDialogHelpers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -28,14 +30,12 @@ class LoginViewModel : ViewModel() {
 
             // Si connexion ok
             if (responseService.code.equals("200")){
-                // Je notifie que c'est ok
-                println("Connexion OK")
-                // Note: J'appel la fonction que j'envoie en parametre de la fonction
-                onSuccess();
+                //AlertDialogHelpers.get().show(responseService.message, onClose = { onSuccess() })
+                AlertDialogHelpers.get().show(responseService.message, onClose = onSuccess)
             }
             else{
                 // Erreur
-                println("Connexion échouée")
+                AlertDialogHelpers.get().show(responseService.message, onClose = {})
             }
         }
     }

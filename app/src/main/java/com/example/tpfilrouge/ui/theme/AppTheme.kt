@@ -25,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.tpfilrouge.R
+import com.example.tpfilrouge.helpers.AlertDialog
 import com.example.tpfilrouge.helpers.ProgressDialog
 
 class AppTheme {
@@ -40,6 +41,7 @@ fun EniPage(content: @Composable () -> Unit){
                 content()
             }
             ProgressDialog()
+            AlertDialog()
         }
     }
 }
