@@ -1,10 +1,6 @@
 package com.example.tpfilrouge.auth
 
 import android.content.Intent
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,27 +19,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.tpfilrouge.R
 import com.example.tpfilrouge.article.ListArticleActivity
 import com.example.tpfilrouge.ui.theme.EniButton
 import com.example.tpfilrouge.ui.theme.EniPage
 import com.example.tpfilrouge.ui.theme.EniTextField
 
-class LoginActivity : ComponentActivity() {
-
-    var loginViewModel = LoginViewModel();
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            LoginActivityPage(loginViewModel);
-        }
-    }
-}
-
 @Composable
-fun LoginActivityPage(loginViewModel: LoginViewModel) {
+fun LoginFragmentPage(loginViewModel: LoginViewModel, navController: NavController? = null) {
     // Ecouter les changements de l'email et mot de passe saisies
     val emailField by loginViewModel.email.collectAsState()
     val passwordField by loginViewModel.password.collectAsState()
@@ -66,18 +50,25 @@ fun LoginActivityPage(loginViewModel: LoginViewModel) {
                 textAlign = TextAlign.Center,
                 style = TextStyle(color = Color(0xCCFFFFFF))
             )
-            EniTextField(stringResource(R.string.email), value = emailField, onValueChange = { value -> loginViewModel.email.value = value; })
-            EniTextField(stringResource(R.string.password), value = passwordField, onValueChange = { value -> loginViewModel.password.value = value; })
-            EniButton(stringResource(R.string.connection), onClick = { loginViewModel.callLoginApi(
-                onSuccess = {
-                    // je change de page (page article
-                    context.startActivity(Intent(context, ListArticleActivity::class.java))
-                }
-            ) })
+            EniTextField(
+                stringResource(R.string.email),
+                value = emailField,
+                onValueChange = { value -> loginViewModel.email.value = value; })
+            EniTextField(
+                stringResource(R.string.password),
+                value = passwordField,
+                onValueChange = { value -> loginViewModel.password.value = value; })
+            EniButton(stringResource(R.string.connection), onClick = {
+                loginViewModel.callLoginApi(
+                    onSuccess = {
+                        // je change de page (page article
+                        context.startActivity(Intent(context, ListArticleActivity::class.java))
+                    }
+                )
+            })
             EniButton(stringResource(R.string.forget_password),
                 onClick = {
-                    // Changer de page (d'activity)
-                    context.startActivity(Intent(context, ResetPasswordActivity::class.java))
+                    navController!!.navigate("reset_password");
                 })
             Spacer(modifier = Modifier.weight(1f))
             Text(
@@ -88,8 +79,7 @@ fun LoginActivityPage(loginViewModel: LoginViewModel) {
             )
             EniButton(stringResource(R.string.register_now),
                 onClick = {
-                    // Changer de page (d'activity)
-                    context.startActivity(Intent(context, SignUpActivity::class.java))
+                    navController!!.navigate("sign_up");
                 })
         }
     }
@@ -101,6 +91,6 @@ fun LoginActivityPage(loginViewModel: LoginViewModel) {
     locale = "en"
 )
 @Composable
-fun LoginActivityPreview() {
-    LoginActivityPage(LoginViewModel())
+fun LoginFragmentPreview() {
+    LoginFragmentPage(LoginViewModel())
 }
