@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.tpfilrouge.R
-import com.example.tpfilrouge.article.ListArticleActivity
+import com.example.tpfilrouge.article.ArticleActivity
 import com.example.tpfilrouge.ui.theme.EniButton
 import com.example.tpfilrouge.ui.theme.EniPage
 import com.example.tpfilrouge.ui.theme.EniTextField
@@ -62,7 +62,7 @@ fun LoginFragmentPage(loginViewModel: LoginViewModel, navController: NavControll
                 loginViewModel.callLoginApi(
                     onSuccess = {
                         // je change de page (page article
-                        context.startActivity(Intent(context, ListArticleActivity::class.java))
+                        context.startActivity(Intent(context, ArticleActivity::class.java))
                     }
                 )
             })
