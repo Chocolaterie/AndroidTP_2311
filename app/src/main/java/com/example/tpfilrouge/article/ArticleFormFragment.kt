@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.tpfilrouge.R
 import com.example.tpfilrouge.ui.theme.EniButton
 import com.example.tpfilrouge.ui.theme.EniPage
@@ -28,7 +29,7 @@ import com.example.tpfilrouge.ui.theme.EniTextField
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
-fun ArticleForm(viewModel: ListArticleViewModel){
+fun ArticleForm(viewModel: ListArticleViewModel, navController : NavController?=null){
     var titleFieldState by remember { mutableStateOf("Un article") }
     var descFieldState by remember { mutableStateOf("Une description") }
 
@@ -42,25 +43,69 @@ fun ArticleForm(viewModel: ListArticleViewModel){
             val newArticle = Article(titleFieldState, descFieldState,
                 "https://avatar.iran.liara.run/public");
             // Envoyer l'article via une méthode view model
-            viewModel.addArticle(newArticle)
+            viewModel.addArticle(newArticle, onSuccess = {
+                navController!!.navigate("list_article")
+            })
         }
     }
 }
 
 @Composable
-fun ArticleFormFragmentPage(viewModel: ListArticleViewModel) {
+fun ArticleEditForm(viewModel: ListArticleViewModel, navController : NavController?=null){
+    var titleFieldState by remember { mutableStateOf(viewModel.editedArticle.title) }
+    var descFieldState by remember { mutableStateOf(viewModel.editedArticle.desc) }
+
+    Column {
+        EniTextField(label = "Saisir un Email", value = titleFieldState,
+            onValueChange = { newValue -> titleFieldState = newValue })
+        EniTextField(label = "Saisir une Description", value = descFieldState,
+            onValueChange = { newValue -> descFieldState = newValue })
+        EniButton("Editer") {
+            // Instancer un article avec les infos de la saisie
+            val editedArticle = Article(titleFieldState, descFieldState,
+                "https://avatar.iran.liara.run/public", id = viewModel.editedArticleId);
+            // Envoyer l'article via une méthode view model
+            viewModel.editArticle(editedArticle)
+        }
+    }
+}
+
+@Composable
+fun AddArticleFormPage(viewModel: ListArticleViewModel, navController : NavController?=null){
+    Text(text = "Ajouter un article",
+        modifier = Modifier.fillMaxWidth(),
+        textAlign = TextAlign.Center,
+        style = TextStyle(color = Color.White, fontSize = 28.sp)
+    )
+    ArticleForm(viewModel, navController)
+}
+
+@Composable
+fun EditArticleFormPage(viewModel: ListArticleViewModel, navController : NavController?=null){
+    Text(text = "Modifier un article",
+        modifier = Modifier.fillMaxWidth(),
+        textAlign = TextAlign.Center,
+        style = TextStyle(color = Color.White, fontSize = 28.sp)
+    )
+    ArticleEditForm(viewModel, navController)
+}
+
+@Composable
+fun ArticleFormFragmentPage(viewModel: ListArticleViewModel, navController : NavController?=null) {
+    // Savoir si je suis en mode edition ou ajout
+    val isEdit by viewModel.isEdit.collectAsState();
 
     EniPage {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(40.dp)
         ) {
-            Text(text = "Ajouter un article",
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                style = TextStyle(color = Color.White, fontSize = 28.sp)
-            )
-            ArticleForm(viewModel)
+            if (isEdit){
+                EditArticleFormPage(viewModel, navController)
+            }
+            else {
+                AddArticleFormPage(viewModel, navController)
+            }
         }
     }
 }

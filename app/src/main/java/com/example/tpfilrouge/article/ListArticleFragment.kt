@@ -1,5 +1,6 @@
 package com.example.tpfilrouge.article
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,8 +8,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -32,7 +39,7 @@ import com.example.tpfilrouge.ui.theme.EniPage
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
-fun ArticleCard(article: Article){
+fun ArticleCard(article: Article, viewModel: ListArticleViewModel, navController: NavController?=null){
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = Modifier.fillMaxWidth().padding(vertical = 14.dp)
@@ -48,6 +55,29 @@ fun ArticleCard(article: Article){
                 Text(article.title,
                     style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 15.sp))
                 Text(article.desc)
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                    IconButton(onClick = {
+                    }) {
+                        Icon(imageVector = Icons.Filled.Info, contentDescription = "Voir")
+                    }
+                    IconButton(onClick = {
+                        // Dire au viewmodel qu'on va être en mode édition
+                        viewModel.isEdit.value = true;
+                        // Dire au viewmodel quel article on va modifier
+                        viewModel.editedArticle = article;
+                        // Dire au viewmodel quel Id d'article en cours de proccessus
+                        viewModel.editedArticleId = article.id;
+                        // naviguer dans le formulaire
+                        navController!!.navigate("article_form")
+                    }) {
+                        Icon(imageVector = Icons.Filled.Edit, contentDescription = "Edit")
+                    }
+                    IconButton(onClick = {
+                        viewModel.callDeleteArticleApi(article.id);
+                    }) {
+                        Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete")
+                    }
+                }
             }
         }
     }
@@ -76,7 +106,7 @@ fun ListArticleFragmentPage(viewModel: ListArticleViewModel, navController: NavC
             }
             LazyColumn {
                 items(articlesState) { article ->
-                    ArticleCard(article)
+                    ArticleCard(article, viewModel, navController)
                 }
             }
         }

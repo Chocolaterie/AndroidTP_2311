@@ -11,10 +11,10 @@ class RetrofitTools {
     companion object {
 
         // La racine de l'api
-        //val BASE_URL = "http://127.0.0.1:3000/"
+        val BASE_URL = "http://127.0.0.1:3000/"
 
         // Pour les personnes emulateurs :
-        val BASE_URL = "http://10.0.2.2:3000/"
+        // val BASE_URL = "http://10.0.2.2:3000/"
 
         // L'utilitaire conversion JSON <=> Objet
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build();

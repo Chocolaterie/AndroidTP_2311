@@ -32,7 +32,7 @@ fun ArticleActivityPage() {
         startDestination = "list_article"
     ) {
         composable("list_article") { ListArticleFragmentPage(viewModel, navController) }
-        composable("article_form") { ArticleFormFragmentPage(viewModel) }
+        composable("article_form") { ArticleFormFragmentPage(viewModel, navController) }
     }
 }
 
