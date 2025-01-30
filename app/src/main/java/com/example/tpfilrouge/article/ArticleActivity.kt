@@ -26,13 +26,15 @@ fun ArticleActivityPage() {
     val navController = rememberNavController();
 
     var viewModel = ListArticleViewModel();
+    var detailViewModel = DetailArticleViewModel();
 
     NavHost(
         navController = navController,
         startDestination = "list_article"
     ) {
-        composable("list_article") { ListArticleFragmentPage(viewModel, navController) }
+        composable("list_article") { ListArticleFragmentPage(viewModel, detailViewModel, navController) }
         composable("article_form") { ArticleFormFragmentPage(viewModel, navController) }
+        composable("article_detail") { DetailArticleFragmentPage(detailViewModel) }
     }
 }
 
