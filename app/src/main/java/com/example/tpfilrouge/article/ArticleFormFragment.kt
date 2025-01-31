@@ -29,7 +29,7 @@ import com.example.tpfilrouge.ui.theme.EniTextField
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
-fun ArticleForm(viewModel: ListArticleViewModel, navController : NavController?=null){
+fun ArticleForm(viewModel: ListArticleViewModel, onAddArticleSuccess : () -> Unit = {}){
     var titleFieldState by remember { mutableStateOf("Un article") }
     var descFieldState by remember { mutableStateOf("Une description") }
 
@@ -43,15 +43,13 @@ fun ArticleForm(viewModel: ListArticleViewModel, navController : NavController?=
             val newArticle = Article(titleFieldState, descFieldState,
                 "https://avatar.iran.liara.run/public");
             // Envoyer l'article via une méthode view model
-            viewModel.addArticle(newArticle, onSuccess = {
-                navController!!.navigate("list_article")
-            })
+            viewModel.addArticle(newArticle, onSuccess = onAddArticleSuccess)
         }
     }
 }
 
 @Composable
-fun ArticleEditForm(viewModel: ListArticleViewModel, navController : NavController?=null){
+fun ArticleEditForm(viewModel: ListArticleViewModel){
     var titleFieldState by remember { mutableStateOf(viewModel.editedArticle.title) }
     var descFieldState by remember { mutableStateOf(viewModel.editedArticle.desc) }
 
@@ -71,27 +69,27 @@ fun ArticleEditForm(viewModel: ListArticleViewModel, navController : NavControll
 }
 
 @Composable
-fun AddArticleFormPage(viewModel: ListArticleViewModel, navController : NavController?=null){
+fun AddArticleFormPage(viewModel: ListArticleViewModel, onAddArticleSuccess : () -> Unit = {}){
     Text(text = "Ajouter un article",
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
         style = TextStyle(color = Color.White, fontSize = 28.sp)
     )
-    ArticleForm(viewModel, navController)
+    ArticleForm(viewModel, onAddArticleSuccess)
 }
 
 @Composable
-fun EditArticleFormPage(viewModel: ListArticleViewModel, navController : NavController?=null){
+fun EditArticleFormPage(viewModel: ListArticleViewModel){
     Text(text = "Modifier un article",
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
         style = TextStyle(color = Color.White, fontSize = 28.sp)
     )
-    ArticleEditForm(viewModel, navController)
+    ArticleEditForm(viewModel)
 }
 
 @Composable
-fun ArticleFormFragmentPage(viewModel: ListArticleViewModel, navController : NavController?=null) {
+fun ArticleFormFragmentPage(viewModel: ListArticleViewModel, onAddArticleSuccess : () -> Unit = {}) {
     // Savoir si je suis en mode edition ou ajout
     val isEdit by viewModel.isEdit.collectAsState();
 
@@ -101,10 +99,10 @@ fun ArticleFormFragmentPage(viewModel: ListArticleViewModel, navController : Nav
             modifier = Modifier.padding(40.dp)
         ) {
             if (isEdit){
-                EditArticleFormPage(viewModel, navController)
+                EditArticleFormPage(viewModel)
             }
             else {
-                AddArticleFormPage(viewModel, navController)
+                AddArticleFormPage(viewModel, onAddArticleSuccess)
             }
         }
     }

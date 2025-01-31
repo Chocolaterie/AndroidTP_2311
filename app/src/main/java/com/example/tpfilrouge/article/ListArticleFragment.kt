@@ -46,7 +46,8 @@ import com.example.tpfilrouge.ui.theme.EniPage
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
-fun ArticleCard(article: Article, viewModel: ListArticleViewModel, detailViewModel: DetailArticleViewModel, navController: NavController?=null){
+fun ArticleCard(article: Article, viewModel: ListArticleViewModel, detailViewModel: DetailArticleViewModel,
+                onClickEditArticle : () -> Unit = {}, onClickShowArticle : () -> Unit = {}){
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         shape = RoundedCornerShape(0.dp),
@@ -69,9 +70,8 @@ fun ArticleCard(article: Article, viewModel: ListArticleViewModel, detailViewMod
                     Text(article.desc, style = TextStyle(color = Color.White))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                         IconButton(onClick = {
-
                             detailViewModel.article.value = article;
-                            navController!!.navigate("article_detail");
+                            onClickShowArticle();
 
                         }) {
                             Icon(imageVector = Icons.Filled.Info, tint = Color.White, contentDescription = "Voir")
@@ -84,7 +84,7 @@ fun ArticleCard(article: Article, viewModel: ListArticleViewModel, detailViewMod
                             // Dire au viewmodel quel Id d'article en cours de proccessus
                             viewModel.editedArticleId = article.id;
                             // naviguer dans le formulaire
-                            navController!!.navigate("article_form")
+                            onClickEditArticle();
                         }) {
                             Icon(imageVector = Icons.Filled.Edit, tint = Color.White, contentDescription = "Edit")
                         }
@@ -102,7 +102,9 @@ fun ArticleCard(article: Article, viewModel: ListArticleViewModel, detailViewMod
 }
 
 @Composable
-fun ListArticleFragmentPage(viewModel: ListArticleViewModel, detailViewModel: DetailArticleViewModel, navController: NavController? = null) {
+fun ListArticleFragmentPage(viewModel: ListArticleViewModel, detailViewModel: DetailArticleViewModel,
+                            onClickAddArticle : () -> Unit = {}, onClickEditArticle : () -> Unit = {},
+                            onClickShowArticle : () -> Unit = {}) {
     // Ecouter les changements de la liste d'article dans le ViewModel
     val articlesState by viewModel.articles.collectAsState();
 
@@ -118,8 +120,7 @@ fun ListArticleFragmentPage(viewModel: ListArticleViewModel, detailViewModel: De
             EniButton("Ajouter un Article") {
                 // Passer le edit à false pour revenir en mode ajout dans le form
                 viewModel.isEdit.value = false;
-
-                navController!!.navigate("article_form")
+                onClickAddArticle();
             }
             EniButton("Rafraichir") {
                 // Appeler l'api du viewmodel
@@ -127,7 +128,7 @@ fun ListArticleFragmentPage(viewModel: ListArticleViewModel, detailViewModel: De
             }
             LazyColumn {
                 items(articlesState) { article ->
-                    ArticleCard(article, viewModel, detailViewModel, navController)
+                    ArticleCard(article, viewModel, detailViewModel, onClickEditArticle, onClickShowArticle)
                 }
             }
         }

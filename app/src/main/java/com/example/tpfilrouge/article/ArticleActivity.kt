@@ -32,8 +32,25 @@ fun ArticleActivityPage() {
         navController = navController,
         startDestination = "list_article"
     ) {
-        composable("list_article") { ListArticleFragmentPage(viewModel, detailViewModel, navController) }
-        composable("article_form") { ArticleFormFragmentPage(viewModel, navController) }
+        composable("list_article") {
+            ListArticleFragmentPage(viewModel, detailViewModel,
+                onClickAddArticle = {
+                    navController.navigate("article_form")
+                },
+                onClickEditArticle = {
+                    navController.navigate("article_form")
+                },
+                onClickShowArticle = {
+                    navController.navigate("article_detail");
+                }
+            )
+        }
+        composable("article_form") {
+            ArticleFormFragmentPage(viewModel,
+                onAddArticleSuccess = {
+                    navController.navigate("list_article")
+            })
+        }
         composable("article_detail") { DetailArticleFragmentPage(detailViewModel) }
     }
 }
